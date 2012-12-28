@@ -2,7 +2,7 @@ var midigrid = require('../lib/midigrid.js');
 
 // create a midigrid device
 var device = midigrid.create({
-  id: 'keyboardgrid',
+  serialoscId: 'keyboardgrid',
   name: 'monome 64 (k0000001)',
   prefix: '/keyboardgrid',
   // set these to valid midi devices, use listmidi.js to see what you have
