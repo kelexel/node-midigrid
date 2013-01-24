@@ -7,8 +7,12 @@
     "name": "Tom Dinchak",
     "email": "dinchak@gmail.com"
   },
+  "scripts": {"test": "./node_modules/mocha/bin/mocha"},
   "dependencies": {
-    "midi": "*",
+    "underscore": "latest",
+    "mocha": "latest",
+    "should": "latest",
+    "midi": "latest",
     "serialosc": "git://github.com/dinchak/node-serialosc.git#master"
   },
   "keywords": [
