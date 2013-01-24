@@ -1,6 +1,6 @@
 var assert = require('assert');
-var midigrid = require('../lib/midigrid');
 var should = require('should');
+var midigrid = require('../lib/midigrid');
 var _ = require('underscore');
 
 describe('midigrid', function() {
@@ -8,7 +8,7 @@ describe('midigrid', function() {
   device1.startMidiInPort();
   describe('device1', function() {
     // check assigned id
-    it('has id=1', function() {
+    it('has correct default properties', function() {
       device1.should.have.property('id', 1);
       device1.should.have.property('name', 'monome 64 (m0000001)');
       device1.should.have.property('prefix', '/midigrid');
@@ -75,7 +75,7 @@ describe('midigrid', function() {
   var device2 = createTestDevice();
   describe('device2', function() {
     // check assigned id
-    it('has id=2', function() {
+    it('has id = 2', function() {
       device2.should.have.property('id', 2);
     });
   });
