@@ -9,10 +9,10 @@
   },
   "scripts": {"test": "./node_modules/mocha/bin/mocha"},
   "dependencies": {
-    "underscore": "latest",
-    "mocha": "latest",
-    "should": "latest",
-    "midi": "latest",
+    "underscore": ">=1.4.4",
+    "mocha": ">=1.11.0",
+    "should": ">=1.2.2",
+    "midi": "*",
     "serialosc": "git://github.com/kelexel/node-serialosc.git#master",
     "prime": "*",
     "prime-util": "*"
