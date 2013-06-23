@@ -13,7 +13,9 @@
     "mocha": "latest",
     "should": "latest",
     "midi": "latest",
-    "serialosc": "git://github.com/dinchak/node-serialosc.git#master"
+    "serialosc": "git://github.com/kelexel/node-serialosc.git#master",
+    "prime": "*",
+    "prime-util": "*"
   },
   "keywords": [
     "monome",
@@ -21,6 +23,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:dinchak/node-midigrid.git"
+    "url": "git@github.com:kelexel/node-midigrid.git"
   }
 }

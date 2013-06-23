@@ -1,19 +1,17 @@
 var assert = require('assert');
 var should = require('should');
-var midigrid = require('../lib/midigrid');
 var _ = require('underscore');
 
 describe('midigrid', function() {
   var device1 = createTestDevice();
-  device1.startMidiInPort();
   describe('device1', function() {
     // check assigned id
     it('has correct default properties', function() {
-      device1.should.have.property('id', 1);
-      device1.should.have.property('name', 'monome 64 (m0000001)');
-      device1.should.have.property('prefix', '/midigrid');
-      device1.should.have.property('sizeX', 8);
-      device1.should.have.property('sizeY', 8);
+      device1_attributes.should.have.property('id', 1);
+      device1_attributes.should.have.property('name', 'monome 64 (m0000001)');
+      device1_attributes.should.have.property('prefix', '/midigrid');
+      device1_attributes.should.have.property('sizeX', 8);
+      device1_attributes.should.have.property('sizeY', 8);
     });
 
     // check invalid message handling
@@ -56,7 +54,7 @@ describe('midigrid', function() {
       data[2].should.equal(127);
       done();
     };
-    device1.eventEmitter.emit('stateChange', {x: 2, y: 3, s: 1});
+    device1._attributes.eventEmitter.emit('stateChange', {x: 2, y: 3, s: 1});
   });
 
   it('returns valid midi note off message in response to serialosc release', function(done) {
@@ -69,41 +67,22 @@ describe('midigrid', function() {
       data[2].should.equal(0);
       done();
     };
-    device1.eventEmitter.emit('stateChange', {x: 7, y: 7, s: 0});
+    device1._attributes.eventEmitter.emit('stateChange', {x: 7, y: 7, s: 0});
   });
 
   var device2 = createTestDevice();
   describe('device2', function() {
     // check assigned id
     it('has id = 2', function() {
-      device2.should.have.property('id', 2);
+      device2_attributes.should.have.property('id', 2);
     });
   });
 });
 
 function createTestDevice(options) {
   options = options || {};
-  options = _.extend(options, {
-    serialoscMapFunc: function(noteNum) {
-      return [Math.floor(noteNum % device.sizeX), Math.floor(noteNum / device.sizeX)];
-    },
-    // this should map an x/y coordinate to a midi note number
-    midiMapFunc: function(data) {
-      return data.x + (data.y * device.sizeX);
-    },
-    // the velocity to use when turning a led on
-    velocityOn: function(data) {
-      return 127;
-    },
-    // the velocity to use when turning a led off
-    velocityOff: function(data) {
-      return 0;
-    }
-  });
 
-  var device = midigrid.create(options);
-
-  device.midiInPort = {
+  options.midiInPort = {
     on: function(event, cb) {
       if (event == "message") {
         device.midiInCB = cb;
@@ -111,11 +90,13 @@ function createTestDevice(options) {
     }
   };
 
-  device.midiOutPort = {
+  options.midiOutPort = {
     sendMessage: function(data) {
       device.testStateChange(data);
     }
   };
+
+  var device = new (require('../lib/midigrid'))(options);
 
   return device;
 }
