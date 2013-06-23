@@ -15,14 +15,13 @@ describe('midigrid', function() {
     });
 
     // check invalid message handling
-    it('returns false on non-note messages', function() {
-      device1.midiInCB(0, [0,0,0]).should.equal(false);
-    });
+    // it('returns false on non-note messages', function() {
+    //   device1.midiInCB(0, [0,0,0]).should.equal(false);
+    // });
 
     // check note on result
-    it('returns correct serialosc message in response to note on', function() {
-      console.log(device1.midiInCB.toString())
       var noteOnResult = device1.midiInCB(0, [156, 44, 127]);
+    it('returns correct serialosc message in response to note on', function() {
 
       noteOnResult[0].should.equal('/grid/key');
       // x coord
@@ -33,51 +32,51 @@ describe('midigrid', function() {
       noteOnResult[3].should.equal(1);
     });
 
-  //   // check note off result
-  //   var noteOffResult = device1.midiInCB(0, [140, 29, 0]);
-  //   it('returns correct serialosc message in response to note off', function() {
-  //     noteOffResult[0].should.equal('/grid/key');
-  //     // x coord
-  //     noteOffResult[1].should.equal(5);
-  //     // y coord
-  //     noteOffResult[2].should.equal(3);
-  //     // state
-  //     noteOffResult[3].should.equal(0);
-  //   });
-  // });
+    // check note off result
+    var noteOffResult = device1.midiInCB(0, [140, 29, 0]);
+    it('returns correct serialosc message in response to note off', function() {
+      noteOffResult[0].should.equal('/grid/key');
+      // x coord
+      noteOffResult[1].should.equal(5);
+      // y coord
+      noteOffResult[2].should.equal(3);
+      // state
+      noteOffResult[3].should.equal(0);
+    });
+  });
   
-  // it('returns valid midi note on message in response to serialosc press', function(done) {
-  //   device1.testStateChange = function(data) {
-  //     // note-on
-  //     data[0].should.equal(156);
-  //     // note number
-  //     data[1].should.equal(26);
-  //     // velocity
-  //     data[2].should.equal(127);
-  //     done();
-  //   };
-  //   device1._attributes.eventEmitter.emit('stateChange', {x: 2, y: 3, s: 1});
-  // });
+  it('returns valid midi note on message in response to serialosc press', function(done) {
+    device1._attributes.midiOutPort.sendMessage = function(data) {
+      // note-on
+      data[0].should.equal(156);
+      // note number
+      data[1].should.equal(26);
+      // velocity
+      data[2].should.equal(127);
+      done();
+    };
+    device1._attributes.eventEmitter.emit('stateChange', {x: 2, y: 3, s: 1});
+  });
 
-  // it('returns valid midi note off message in response to serialosc release', function(done) {
-  //   device1.testStateChange = function(data) {
-  //     // note-off
-  //     data[0].should.equal(140);
-  //     // note number
-  //     data[1].should.equal(63);
-  //     // velocity
-  //     data[2].should.equal(0);
-  //     done();
-  //   };
-  //   device1._attributes.eventEmitter.emit('stateChange', {x: 7, y: 7, s: 0});
-  // });
+  it('returns valid midi note off message in response to serialosc release', function(done) {
+      device1._attributes.midiOutPort.sendMessage = function(data) {
+      // note-off
+      data[0].should.equal(140);
+      // note number
+      data[1].should.equal(63);
+      // velocity
+      data[2].should.equal(0);
+      done();
+    };
+    device1._attributes.eventEmitter.emit('stateChange', {x: 7, y: 7, s: 0});
+  });
 
-  // var device2 = createTestDevice();
-  // describe('device2', function() {
-  //   // check assigned id
-  //   it('has id = 2', function() {
-  //     device2_attributes.should.have.property('id', 2);
-  //   });
+  var device2 = createTestDevice();
+  describe('device2', function() {
+    // check assigned id
+    it('has id = 2', function() {
+      device2._attributes.should.have.property('id', 2);
+    });
   });
 });
 
@@ -87,18 +86,18 @@ function createTestDevice(options) {
   options.midiInPort = {
     on: function(event, cb) {
       if (event == "message") {
-      console.log('device has midiInCB ? '+(device.midiInCB ? 'yes': 'no'))
         device.midiInCB = cb;
       }
     }
   };
 
-  options.midiOutPort = {
-    sendMessage: function(data) {
-      console.log('device has testStateChange ? '+(device.testStateChange ? 'yes': 'no'))
-      device.testStateChange(data);
-    }
-  };
+  // options.midiOutPort = {
+  //   sendMessage: function(data) {
+  //     console.log('received sendMessage !!');
+  //     // console.log(this.testStateChange.toString())
+  //     this.testStateChange.call(this, data);
+  //   }
+  // };
 
   var device = new (require('../lib/midigrid'))(options);
   device.start();
