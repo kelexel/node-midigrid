@@ -18,16 +18,6 @@ var testDevice = prime({
     var noteNum = data.x + (data.y * device.sizeX);
     console.log('led event: converted ' + data.x + ', ' + data.y + ' to note ' + noteNum);
     return noteNum;
-  },
-
-  // the velocity to use when turning a led on
-  _velocityOn: function(data) {
-    return 127;
-  },
-  
-  // the velocity to use when turning a led off
-  _velocityOff: function(data) {
-    return 0;
   }
 });
 

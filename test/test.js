@@ -15,9 +15,9 @@ describe('midigrid', function() {
     });
 
     // check invalid message handling
-    // it('returns false on non-note messages', function() {
-    //   device1.midiInCB(0, [0,0,0]).should.equal(false);
-    // });
+    it('returns false on non-note messages', function() {
+      device1.midiInCB(0, [0,0,0]).should.equal(false);
+    });
 
     // check note on result
       var noteOnResult = device1.midiInCB(0, [156, 44, 127]);
@@ -90,14 +90,6 @@ function createTestDevice(options) {
       }
     }
   };
-
-  // options.midiOutPort = {
-  //   sendMessage: function(data) {
-  //     console.log('received sendMessage !!');
-  //     // console.log(this.testStateChange.toString())
-  //     this.testStateChange.call(this, data);
-  //   }
-  // };
 
   var device = new (require('../lib/midigrid'))(options);
   device.start();
