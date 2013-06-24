@@ -31,5 +31,7 @@ var options = {
 };
 var device = new testDevice(options);
 device.start();
+console.log('current config:');
+console.log(device.getConfig());
 
 var stdin = process.openStdin();
